@@ -7,7 +7,7 @@ use self::serde::{de, Deserializer};
 // Deserializes `str` types to bool
 struct DeserializetoBool;
 
-impl de::Visitor for DeserializetoBool {
+impl<'de> de::Visitor<'de> for DeserializetoBool {
     type Value = bool;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
@@ -27,17 +27,17 @@ impl de::Visitor for DeserializetoBool {
     }
 }
 
-pub fn to_bool<D>(des: D) -> Result<bool, D::Error>
-    where D: Deserializer
+pub fn to_bool<'de, D>(des: D) -> Result<bool, D::Error>
+    where D: Deserializer<'de>
 {
-    des.deserialize(DeserializetoBool)
+    des.deserialize_bool(DeserializetoBool)
 }
 
 
 // Deserializes `str` types to f64
 struct DeserializetoF64;
 
-impl de::Visitor for DeserializetoF64 {
+impl<'de> de::Visitor<'de> for DeserializetoF64 {
     type Value = f64;
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         formatter.write_str("an floating point integer")
@@ -55,8 +55,8 @@ impl de::Visitor for DeserializetoF64 {
     }
 }
 
-pub fn to_f64<D>(des: D) -> Result<f64, D::Error>
-    where D: Deserializer
+pub fn to_f64<'de, D>(des: D) -> Result<f64, D::Error>
+    where D: Deserializer<'de>
 {
-    des.deserialize(DeserializetoF64)
+    des.deserialize_f64(DeserializetoF64)
 }
