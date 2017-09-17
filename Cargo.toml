@@ -23,5 +23,5 @@ serde_json = "^1.0"
 users = "~0.5"
 
 [lib]
-name = "ceph"
+name = "ceph_safe_disk"
 path = "lib/lib.rs"
