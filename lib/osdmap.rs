@@ -1,3 +1,5 @@
+use des::to_f64;
+
 #[derive(Deserialize, Debug, PartialEq, Clone)]
 pub struct OsdMap {
     pub pool_max: i32,
@@ -25,13 +27,15 @@ pub struct Default {
 pub struct Osds {
     pub heartbeat_back_addr: String,
     pub uuid: String,
-    pub weight: f32,
+    #[serde(deserialize_with = "to_f64")]
+    pub weight: f64,
     pub up_from: i32,
     pub heartbeat_front_addr: String,
     pub down_at: i32,
     pub up: i32,
     pub lost_at: i32,
-    pub primary_affinity: f32,
+    #[serde(deserialize_with = "to_f64")]
+    pub primary_affinity: f64,
     pub state: Vec<String>,
     pub last_clean_begin: i32,
     pub last_clean_end: i32,
@@ -43,7 +47,8 @@ pub struct Osds {
 
 #[derive(Deserialize, Debug, PartialEq, Clone)]
 pub struct OsdXinfo {
-    pub laggy_probability: f32,
+    #[serde(deserialize_with = "to_f64")]
+    pub laggy_probability: f64,
     pub laggy_interval: i32,
     pub features: u64,
     pub old_weight: Option<i32>,

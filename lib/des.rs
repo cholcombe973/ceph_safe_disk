@@ -15,20 +15,23 @@ impl<'de> de::Visitor<'de> for DeserializetoBool {
     }
 
     fn visit_bool<E>(self, v: bool) -> Result<Self::Value, E>
-        where E: de::Error
+    where
+        E: de::Error,
     {
         Ok(v)
     }
 
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
-        where E: de::Error
+    where
+        E: de::Error,
     {
         Ok(v.parse::<bool>().unwrap_or(false))
     }
 }
 
 pub fn to_bool<'de, D>(des: D) -> Result<bool, D::Error>
-    where D: Deserializer<'de>
+where
+    D: Deserializer<'de>,
 {
     des.deserialize_bool(DeserializetoBool)
 }
@@ -43,20 +46,23 @@ impl<'de> de::Visitor<'de> for DeserializetoF64 {
         formatter.write_str("an floating point integer")
     }
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
-        where E: de::Error
+    where
+        E: de::Error,
     {
         Ok(v.parse::<f64>().unwrap_or(0.0_f64))
     }
 
     fn visit_f64<E>(self, v: f64) -> Result<Self::Value, E>
-        where E: de::Error
+    where
+        E: de::Error,
     {
         Ok(v)
     }
 }
 
 pub fn to_f64<'de, D>(des: D) -> Result<f64, D::Error>
-    where D: Deserializer<'de>
+where
+    D: Deserializer<'de>,
 {
-    des.deserialize_f64(DeserializetoF64)
+    des.deserialize_str(DeserializetoF64)
 }
