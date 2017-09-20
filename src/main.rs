@@ -1,12 +1,12 @@
 extern crate getopts;
-extern crate ceph;
+extern crate ceph_safe_disk;
 
 use std::env;
 use std::process;
 
-use ceph::exit::*;
-use ceph::diag::*;
-use ceph::exec::check_user;
+use ceph_safe_disk::exit::*;
+use ceph_safe_disk::diag::*;
+use ceph_safe_disk::exec::check_user;
 
 pub static NAME: &'static str = "ceph-safe-disk";
 
