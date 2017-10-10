@@ -1,5 +1,6 @@
 extern crate serde_json;
 
+use std::error::Error as StdError;
 use std::fmt;
 use std::io;
 use std::string;
@@ -23,6 +24,27 @@ impl fmt::Display for CSDError {
             CSDError::Utf8Error(ref err) => write!(f, "UTF-8 conversion error, {}", err),
             CSDError::CephExecError(ref err) => write!(f, "Error executing `ceph`, {}", err),
             CSDError::ExecError => write!(f, "Must be run as root or ceph user"),
+        }
+    }
+}
+
+impl StdError for CSDError {
+    fn description(&self) -> &str {
+        match *self {
+            CSDError::Io(ref err) => err.description(),
+            CSDError::JsonDecode(ref err) => err.description(),
+            CSDError::Utf8Error(ref err) => err.description(),
+            CSDError::CephExecError(ref err) => err,
+            CSDError::ExecError => "Must be run as root or ceph user",
+        }
+    }
+    fn cause(&self) -> Option<&StdError> {
+        match *self {
+            CSDError::Io(ref err) => err.cause(),
+            CSDError::JsonDecode(ref err) => err.cause(),
+            CSDError::Utf8Error(ref err) => err.cause(),
+            CSDError::CephExecError(ref err) => None,
+            CSDError::ExecError => None,
         }
     }
 }
