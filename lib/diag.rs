@@ -4,16 +4,16 @@ extern crate serde_json;
 use ansi_term::Colour;
 
 use error::CSDError;
-use osdmap::OsdMap;
-use pgstate::*;
-use pgmap::*;
 use from::*;
-
+use osdmap::OsdMap;
+use pgmap::*;
+use pgstate::*;
 
 use std::collections::BinaryHeap;
 use std::fmt;
 
 // Format for printing
+#[derive(Clone, Copy, Debug)]
 pub enum Format {
     Pretty,
     Json,
@@ -30,10 +30,10 @@ pub enum Status {
 
 impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            &Status::Unknown => write!(f, "Pending"),
-            &Status::Safe => write!(f, "Removable"),
-            &Status::NonSafe => write!(f, "Not removable"),
+        match *self {
+            Status::Unknown => write!(f, "Pending"),
+            Status::Safe => write!(f, "Removable"),
+            Status::NonSafe => write!(f, "Not removable"),
         }
     }
 }
@@ -45,10 +45,7 @@ pub struct PgDiag {
 
 impl PgDiag {
     fn new(osd_id: i32, pg_info: PgInfo) -> PgDiag {
-        PgDiag {
-            osd_id: osd_id,
-            pg_info: pg_info,
-        }
+        PgDiag { osd_id, pg_info }
     }
 }
 
@@ -61,11 +58,11 @@ pub struct PgInfo {
 }
 
 impl PgInfo {
-    fn new(states: &String, pgid: String) -> PgInfo {
+    fn new(states: &str, pgid: String) -> PgInfo {
         PgInfo {
             pg_id: pgid,
-            pg_state: states.clone(),
-            rm_safety: RmSafety::new(states),
+            pg_state: states.to_string(),
+            rm_safety: RmSafety::new(&states),
         }
     }
 }
@@ -79,7 +76,7 @@ pub struct OsdDiag {
 impl OsdDiag {
     fn new(osd_id: i32) -> OsdDiag {
         OsdDiag {
-            osd_id: osd_id,
+            osd_id,
             osd_status: BinaryHeap::new(),
         }
     }
@@ -103,14 +100,14 @@ impl ClusterReview {
         let mut review: ClusterReview = Default::default();
         for osd in &cluster_diag.osd_diags {
             if let Some(osd_status) = osd.osd_status.peek() {
-                match osd_status {
-                    &Status::NonSafe => review.not_removable.push(osd.osd_id.clone()),
-                    &Status::Safe => review.removable.push(osd.osd_id.clone()),
-                    &Status::Unknown => review.pending.push(osd.osd_id.clone()),
+                match *osd_status {
+                    Status::NonSafe => review.not_removable.push(osd.osd_id),
+                    Status::Safe => review.removable.push(osd.osd_id),
+                    Status::Unknown => review.pending.push(osd.osd_id),
                 }
             }
         }
-        return review;
+        review
     }
 }
 
@@ -140,45 +137,39 @@ impl ClusterDiag {
             if let Some(osd_status) = osd.osd_status.peek() {
                 // ClusterDiag.status defaults to safe and is only changed once
                 // an OSD that is unsafe to remove or pending is found
-                match osd_status {
-                    &Status::NonSafe => self.status = Status::NonSafe,
-                    &Status::Unknown => self.status = Status::Unknown,
+                match *osd_status {
+                    Status::NonSafe => self.status = Status::NonSafe,
+                    Status::Unknown => self.status = Status::Unknown,
                     _ => (),
                 };
             }
         }
-        return self.status.clone();
+        self.status.clone()
     }
 
     fn print_pretty(&self) {
         println!("Current OSD statuses:");
         for osd in &self.osd_diags {
             if let Some(osd_status) = osd.osd_status.peek() {
-                match osd_status {
-                    &Status::NonSafe => {
-                        println!(
-                            "{} {}: {}",
-                            Colour::Red.paint("●"),
-                            osd.osd_id,
-                            osd_status
-                        )
-                    }
-                    &Status::Safe => {
-                        println!(
-                            "{} {}: {}",
-                            Colour::Green.paint("●"),
-                            osd.osd_id,
-                            osd_status
-                        )
-                    }
-                    &Status::Unknown => {
-                        println!(
-                            "{} {}: {}",
-                            Colour::Yellow.paint("●"),
-                            osd.osd_id,
-                            osd_status
-                        )
-                    }
+                match *osd_status {
+                    Status::NonSafe => println!(
+                        "{} {}: {}",
+                        Colour::Red.paint("●"),
+                        osd.osd_id,
+                        osd_status
+                    ),
+                    Status::Safe => println!(
+                        "{} {}: {}",
+                        Colour::Green.paint("●"),
+                        osd.osd_id,
+                        osd_status
+                    ),
+                    Status::Unknown => println!(
+                        "{} {}: {}",
+                        Colour::Yellow.paint("●"),
+                        osd.osd_id,
+                        osd_status
+                    ),
                 }
             }
         }
@@ -217,14 +208,15 @@ impl DiagMap {
         }
         match format {
             Format::Pretty => {
-                match safe {
-                    true => println!("{} Safe to remove an OSD", Colour::Green.paint("●")),
-                    false => println!("{} Not safe to remove an OSD", Colour::Red.paint("●")),
+                if safe {
+                    println!("{} Safe to remove an OSD", Colour::Green.paint("●"));
+                } else {
+                    println!("{} Not safe to remove an OSD", Colour::Red.paint("●"));
                 };
             }
             Format::Json => println!("{{\"Safe to remove an OSD\":{}}}", safe),
         };
-        return safe;
+        safe
     }
 
     // Maps out PGs and their states to each OSD in their `acting` list.
@@ -249,14 +241,16 @@ impl DiagMap {
 
         // Generate OSD removability.
         for pg in &pg_diags {
-            if let None = cluster_diag.osd_diags.iter_mut().find(|ref osd| {
-                osd.osd_id == pg.osd_id
-            })
+            if let None = cluster_diag
+                .osd_diags
+                .iter_mut()
+                .find(|ref osd| osd.osd_id == pg.osd_id)
             {
                 cluster_diag.osd_diags.push(OsdDiag::new(pg.osd_id));
-            } else if let Some(mut osd) = cluster_diag.osd_diags.iter_mut().find(|ref osd| {
-                osd.osd_id == pg.osd_id
-            })
+            } else if let Some(mut osd) = cluster_diag
+                .osd_diags
+                .iter_mut()
+                .find(|ref osd| osd.osd_id == pg.osd_id)
             {
                 match pg.pg_info.rm_safety {
                     RmSafety::None => osd.osd_status.push(Status::NonSafe),
@@ -268,24 +262,23 @@ impl DiagMap {
 
         // Print the statuses of OSDs based on `format`
         cluster_diag.print(format);
-        return cluster_diag.status();
+        cluster_diag.status()
     }
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use from::*;
     use osdmap::OsdMap;
     use pgmap::*;
-    use from::*;
 
     #[test]
     fn quick_diag_jewel_safe() {
         let status = DiagMap {
             pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
             osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
-        }.quick_diag(Format::Pretty);
+        }.quick_diag(&Format::Pretty);
 
         assert_eq!(status, true);
     }
@@ -325,7 +318,7 @@ mod tests {
         let status = DiagMap {
             pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
             osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
-        }.quick_diag(Format::Json);
+        }.quick_diag(&Format::Json);
 
         assert_eq!(status, true);
     }

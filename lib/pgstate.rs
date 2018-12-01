@@ -14,19 +14,19 @@ pub enum RmSafety {
 // completely unsafe. The rest are when objects are being moved around and the
 // state cannot be completely determined.
 impl RmSafety {
-    pub fn new(states: &String) -> RmSafety {
+    pub fn new(states: &str) -> RmSafety {
         let pg_states = PgState::parse_state(states);
         if pg_states.contains(&PgState::Active) && pg_states.contains(&PgState::Clean) {
-            return RmSafety::Total;
+            RmSafety::Total
         } else if pg_states.contains(&PgState::Backfill) ||
                   pg_states.contains(&PgState::BackfillToofull) ||
                   pg_states.contains(&PgState::WaitBackfill) ||
                   pg_states.contains(&PgState::Down) ||
                   pg_states.contains(&PgState::Undersized) ||
                   pg_states.contains(&PgState::Incomplete) {
-            return RmSafety::None;
+            RmSafety::None
         } else {
-            return RmSafety::Pending;
+            RmSafety::Pending
         }
     }
 }
@@ -87,7 +87,7 @@ impl FromStr for PgState {
 }
 
 impl PgState {
-    pub fn parse_state(state: &String) -> BTreeSet<PgState> {
+    pub fn parse_state(state: &str) -> BTreeSet<PgState> {
         let states: Vec<&str> = state.split('+').collect();
         let mut parsed_states = BTreeSet::new();
         for state in states {

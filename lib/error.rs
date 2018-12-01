@@ -43,7 +43,7 @@ impl StdError for CSDError {
             CSDError::Io(ref err) => err.cause(),
             CSDError::JsonDecode(ref err) => err.cause(),
             CSDError::Utf8Error(ref err) => err.cause(),
-            CSDError::CephExecError(ref err) => None,
+            CSDError::CephExecError(ref _err) => None,
             CSDError::ExecError => None,
         }
     }

@@ -24,6 +24,7 @@ pub fn call_ceph(cmd: &str) -> Result<String, CSDError> {
 pub fn check_user() -> Result<(), CSDError> {
     match get_current_username() {
         Some(user) => {
+            let user = user.to_string_lossy();
             match user.as_ref() {
                 "ceph" => Ok(()),
                 "root" => Ok(()),
