@@ -275,9 +275,9 @@ impl DiagMap {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use from::*;
+    use from::FromFile;
     use osdmap::OsdMap;
-    use pgmap::*;
+    use pgmap::PGMap;
 
     #[test]
     fn quick_diag_jewel_safe() {
