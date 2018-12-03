@@ -1,6 +1,6 @@
 [package]
 name = "ceph-safe-disk"
-version = "0.1.3"
+version = "0.1.4"
 repository = "https://github.com/CanonicalLtd/ceph_safe_disk"
 description = "Ceph disk safety removal tool"
 authors = [
