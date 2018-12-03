@@ -1,4 +1,6 @@
-use des::{to_bool, to_f64};
+extern crate serde_json;
+
+use self::serde_json::Value;
 
 // See `src/mon/PGMap.h` in ceph's source
 #[derive(Deserialize, Debug, PartialEq, Clone)]
@@ -9,13 +11,11 @@ pub struct PGMap {
     pub stamp: String,
     pub pg_stats_sum: PgStatsSum,
     pub last_pg_scan: i32,
-    #[serde(deserialize_with = "to_f64")]
-    pub full_ratio: f64,
+    pub full_ratio: Value,
     pub pool_stats: Vec<PoolStats>,
     pub version: i32,
     pub last_osdmap_epoch: i32,
-    #[serde(deserialize_with = "to_f64")]
-    pub near_full_ratio: f64,
+    pub near_full_ratio: Value,
     pub osd_stats: Vec<OsdStats>,
     pub pg_stats: Vec<PgStats>,
 }
@@ -136,8 +136,7 @@ pub struct PgStats {
     pub log_start: String,
     pub log_size: i32,
     pub hitset_stats_invalid: Option<bool>,
-    #[serde(deserialize_with = "to_bool")]
-    pub stats_invalid: bool,
+    pub stats_invalid: Value,
     pub acting_primary: i32,
     pub reported_seq: String,
     pub ondisk_log_size: i32,

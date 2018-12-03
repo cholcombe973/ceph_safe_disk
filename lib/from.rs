@@ -33,6 +33,10 @@ pub trait FromCeph<T> {
 
 impl<T: DeserializeOwned + Debug> FromCeph<T> for T {
     fn from_ceph(cmd: &str) -> Result<T, CSDError> {
-        Ok(serde_json::from_str(&call_ceph(cmd)?)?)
+        let ceph_output = call_ceph(cmd)?;
+        let serde_res: Result<T, serde_json::Error> = serde_json::from_str(&ceph_output);
+        trace!("deserialize ceph: {:?}", serde_res);
+
+        Ok(serde_res?)
     }
 }
