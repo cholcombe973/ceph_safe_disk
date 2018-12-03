@@ -196,8 +196,8 @@ pub struct DiagMap {
 impl DiagMap {
     pub fn new() -> Result<DiagMap, CSDError> {
         Ok(DiagMap {
-            pg_map: try!(PGMap::from_ceph("pg dump")),
-            osd_map: try!(OsdMap::from_ceph("osd dump")),
+            pg_map: PGMap::from_ceph("pg dump")?,
+            osd_map: OsdMap::from_ceph("osd dump")?,
         })
     }
 

@@ -1,8 +1,7 @@
 extern crate serde;
 
-use std::fmt;
 use self::serde::{de, Deserializer};
-
+use std::fmt;
 
 // Deserializes `str` types to bool
 struct DeserializetoBool;
@@ -35,7 +34,6 @@ where
 {
     des.deserialize_bool(DeserializetoBool)
 }
-
 
 // Deserializes `str` types to f64
 struct DeserializetoF64;

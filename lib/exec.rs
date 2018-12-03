@@ -6,11 +6,9 @@ use users::*;
 use std::process::Command;
 
 pub fn call_ceph(cmd: &str) -> Result<String, CSDError> {
-    let ceph = try!(
-        Command::new("/usr/bin/env")
-            .args(&["sh", "-c", &format!("ceph {} -f json", cmd)])
-            .output()
-    );
+    let ceph = Command::new("/usr/bin/env")
+        .args(&["sh", "-c", &format!("ceph {} -f json", cmd)])
+        .output()?;
     if ceph.status.success() {
         Ok(String::from_utf8_lossy(&ceph.stdout).into_owned())
     } else {

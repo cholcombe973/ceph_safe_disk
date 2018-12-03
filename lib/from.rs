@@ -4,9 +4,9 @@ extern crate serde_json;
 use error::CSDError;
 use exec::*;
 
+use std::fmt::Debug;
 use std::fs::File;
 use std::io::prelude::*;
-use std::fmt::Debug;
 
 use self::serde::de::DeserializeOwned;
 
@@ -17,10 +17,10 @@ pub trait FromFile<T> {
 
 impl<T: DeserializeOwned + Debug> FromFile<T> for T {
     fn from_file(path: &str) -> Result<T, CSDError> {
-        let mut file = try!(File::open(path));
+        let mut file = File::open(path)?;
         let mut buffer = String::new();
-        try!(file.read_to_string(&mut buffer));
-        Ok(try!(serde_json::from_str(&buffer)))
+        file.read_to_string(&mut buffer)?;
+        Ok(serde_json::from_str(&buffer)?)
     }
 }
 
@@ -33,6 +33,6 @@ pub trait FromCeph<T> {
 
 impl<T: DeserializeOwned + Debug> FromCeph<T> for T {
     fn from_ceph(cmd: &str) -> Result<T, CSDError> {
-        Ok(try!(serde_json::from_str(&try!(call_ceph(cmd)))))
+        Ok(serde_json::from_str(&call_ceph(cmd)?)?)
     }
 }
