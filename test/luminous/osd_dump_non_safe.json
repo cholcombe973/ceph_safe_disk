@@ -1,0 +1,120 @@
+{
+    "epoch": 202,
+    "fsid": "9896a933-7686-4f7b-bc85-4ff2b332f40a",
+    "created": "2018-09-14 20:17:51.603558",
+    "modified": "2018-12-01 00:13:14.136700",
+    "flags": "sortbitwise,recovery_deletes,purged_snapdirs",
+    "crush_version": 49,
+    "full_ratio": 0.950000,
+    "backfillfull_ratio": 0.900000,
+    "nearfull_ratio": 0.850000,
+    "cluster_snapshot": "",
+    "pool_max": 1,
+    "max_osd": 4,
+    "require_min_compat_client": "jewel",
+    "min_compat_client": "jewel",
+    "require_osd_release": "luminous",
+    "pools": [
+        {
+            "pool": 1,
+            "pool_name": "foo",
+            "flags": 1,
+            "flags_names": "hashpspool",
+            "type": 1,
+            "size": 2,
+            "min_size": 1,
+            "crush_rule": 0,
+            "object_hash": 2,
+            "pg_num": 100,
+            "pg_placement_num": 100,
+            "crash_replay_interval": 0,
+            "last_change": "16",
+            "last_force_op_resend": "0",
+            "last_force_op_resend_preluminous": "0",
+            "auid": 0,
+            "snap_mode": "selfmanaged",
+            "snap_seq": 0,
+            "snap_epoch": 0,
+            "pool_snaps": [],
+            "removed_snaps": "[]",
+            "quota_max_bytes": 0,
+            "quota_max_objects": 0,
+            "tiers": [],
+            "tier_of": -1,
+            "read_tier": -1,
+            "write_tier": -1,
+            "cache_mode": "none",
+            "target_max_bytes": 0,
+            "target_max_objects": 0,
+            "cache_target_dirty_ratio_micro": 400000,
+            "cache_target_dirty_high_ratio_micro": 600000,
+            "cache_target_full_ratio_micro": 800000,
+            "cache_min_flush_age": 0,
+            "cache_min_evict_age": 0,
+            "erasure_code_profile": "",
+            "hit_set_params": {
+                "type": "none"
+            },
+            "hit_set_period": 0,
+            "hit_set_count": 0,
+            "use_gmt_hitset": true,
+            "min_read_recency_for_promote": 0,
+            "min_write_recency_for_promote": 0,
+            "hit_set_grade_decay_rate": 0,
+            "hit_set_search_last_n": 0,
+            "grade_table": [],
+            "stripe_width": 0,
+            "expected_num_objects": 0,
+            "fast_read": false,
+            "options": {},
+            "application_metadata": {}
+        }
+    ],
+    "osds": [
+        {
+            "osd": 0,
+            "uuid": "d318ed98-88f7-47ac-9684-de7a09959801",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 202,
+            "up_thru": 0,
+            "down_at": 0,
+            "lost_at": 0,
+            "public_addr": "192.168.122.198:6801/14515",
+            "cluster_addr": "192.168.122.198:6802/14515",
+            "heartbeat_back_addr": "192.168.122.198:6803/14515",
+            "heartbeat_front_addr": "192.168.122.198:6804/14515",
+            "state": [
+                "exists",
+                "up"
+            ]
+        }
+    ],
+    "osd_xinfo": [
+        {
+            "osd": 0,
+            "down_stamp": "0.000000",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 4611087853745930235,
+            "old_weight": 0
+        }
+    ],
+    "pg_upmap": [],
+    "pg_upmap_items": [],
+    "pg_temp": [],
+    "primary_temp": [],
+    "blacklist": {},
+    "erasure_code_profiles": {
+        "default": {
+            "k": "2",
+            "m": "1",
+            "plugin": "jerasure",
+            "technique": "reed_sol_van"
+        }
+    }
+}

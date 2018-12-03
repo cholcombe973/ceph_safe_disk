@@ -78,7 +78,8 @@ pub struct Pools {
     pub min_read_recency_for_promote: i32,
     pub target_max_objects: i32,
     pub pg_num: i32,
-    pub crush_ruleset: i32,
+    pub crush_ruleset: Option<i32>,
+    pub crush_rule: Option<i32>,
     pub pool_name: String,
     pub cache_min_evict_age: i32,
     pub snap_mode: String,
@@ -107,6 +108,15 @@ pub struct Pools {
 mod tests {
     use super::*;
     use from::FromFile;
+
+    // Luminous tests
+    #[test]
+    #[should_panic]
+    fn osdmap_from_luminous_file_panic() {
+        let osdmap = OsdMap::from_file("test/luminous/osd_dump_non_safe.json").unwrap();
+        // If this is safe to remove then osd's len should be min_size + 1
+        assert_eq!(osdmap.osds.len(), (osdmap.pools[0].min_size + 1) as usize);
+    }
 
     // Jewel tests
     #[test]

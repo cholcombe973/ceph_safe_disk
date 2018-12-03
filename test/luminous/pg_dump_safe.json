@@ -1,0 +1,203 @@
+{
+    "version": 2012953,
+    "stamp": "2018-12-03 17:50:45.115416",
+    "last_osdmap_epoch": 0,
+    "last_pg_scan": 0,
+    "min_last_epoch_clean": 0,
+    "full_ratio": 0.000000,
+    "near_full_ratio": 0.000000,
+    "pg_stats_sum": {
+        "stat_sum": {
+            "num_bytes": 0,
+            "num_objects": 0,
+            "num_object_clones": 0,
+            "num_object_copies": 0,
+            "num_objects_missing_on_primary": 0,
+            "num_objects_missing": 0,
+            "num_objects_degraded": 0,
+            "num_objects_misplaced": 0,
+            "num_objects_unfound": 0,
+            "num_objects_dirty": 0,
+            "num_whiteouts": 0,
+            "num_read": 0,
+            "num_read_kb": 0,
+            "num_write": 0,
+            "num_write_kb": 0,
+            "num_scrub_errors": 0,
+            "num_shallow_scrub_errors": 0,
+            "num_deep_scrub_errors": 0,
+            "num_objects_recovered": 0,
+            "num_bytes_recovered": 0,
+            "num_keys_recovered": 0,
+            "num_objects_omap": 0,
+            "num_objects_hit_set_archive": 0,
+            "num_bytes_hit_set_archive": 0,
+            "num_flush": 0,
+            "num_flush_kb": 0,
+            "num_evict": 0,
+            "num_evict_kb": 0,
+            "num_promote": 0,
+            "num_flush_mode_high": 0,
+            "num_flush_mode_low": 0,
+            "num_evict_mode_some": 0,
+            "num_evict_mode_full": 0,
+            "num_objects_pinned": 0,
+            "num_legacy_snapsets": 0,
+            "num_large_omap_objects": 0
+        },
+        "log_size": 0,
+        "ondisk_log_size": 0,
+        "up": 0,
+        "acting": 0
+    },
+    "osd_stats_sum": {
+        "up_from": 0,
+        "seq": 0,
+        "num_pgs": 0,
+        "kb": 1758081024,
+        "kb_used": 3151488,
+        "kb_avail": 1754929536,
+        "hb_peers": [],
+        "snap_trim_queue_len": 0,
+        "num_snap_trimming": 0,
+        "op_queue_age_hist": {
+            "histogram": [],
+            "upper_bound": 1
+        },
+        "perf_stat": {
+            "commit_latency_ms": 0,
+            "apply_latency_ms": 0
+        }
+    },
+    "osd_epochs": [
+        {
+            "osd": 2,
+            "epoch": 14
+        },
+        {
+            "osd": 0,
+            "epoch": 14
+        },
+        {
+            "osd": 1,
+            "epoch": 14
+        }
+    ],
+    "pg_stats_delta": {
+        "stat_sum": {
+            "num_bytes": 0,
+            "num_objects": 0,
+            "num_object_clones": 0,
+            "num_object_copies": 0,
+            "num_objects_missing_on_primary": 0,
+            "num_objects_missing": 0,
+            "num_objects_degraded": 0,
+            "num_objects_misplaced": 0,
+            "num_objects_unfound": 0,
+            "num_objects_dirty": 0,
+            "num_whiteouts": 0,
+            "num_read": 0,
+            "num_read_kb": 0,
+            "num_write": 0,
+            "num_write_kb": 0,
+            "num_scrub_errors": 0,
+            "num_shallow_scrub_errors": 0,
+            "num_deep_scrub_errors": 0,
+            "num_objects_recovered": 0,
+            "num_bytes_recovered": 0,
+            "num_keys_recovered": 0,
+            "num_objects_omap": 0,
+            "num_objects_hit_set_archive": 0,
+            "num_bytes_hit_set_archive": 0,
+            "num_flush": 0,
+            "num_flush_kb": 0,
+            "num_evict": 0,
+            "num_evict_kb": 0,
+            "num_promote": 0,
+            "num_flush_mode_high": 0,
+            "num_flush_mode_low": 0,
+            "num_evict_mode_some": 0,
+            "num_evict_mode_full": 0,
+            "num_objects_pinned": 0,
+            "num_legacy_snapsets": 0,
+            "num_large_omap_objects": 0
+        },
+        "log_size": 0,
+        "ondisk_log_size": 0,
+        "up": 0,
+        "acting": 0
+    },
+    "pg_stats": [],
+    "pool_stats": [],
+    "osd_stats": [
+        {
+            "osd": 2,
+            "up_from": 10,
+            "seq": 42951756217,
+            "num_pgs": 0,
+            "kb": 586027008,
+            "kb_used": 1050496,
+            "kb_avail": 584976512,
+            "hb_peers": [
+                0,
+                1
+            ],
+            "snap_trim_queue_len": 0,
+            "num_snap_trimming": 0,
+            "op_queue_age_hist": {
+                "histogram": [],
+                "upper_bound": 1
+            },
+            "perf_stat": {
+                "commit_latency_ms": 0,
+                "apply_latency_ms": 0
+            }
+        },
+        {
+            "osd": 0,
+            "up_from": 12,
+            "seq": 51540690891,
+            "num_pgs": 0,
+            "kb": 586027008,
+            "kb_used": 1050496,
+            "kb_avail": 584976512,
+            "hb_peers": [
+                1,
+                2
+            ],
+            "snap_trim_queue_len": 0,
+            "num_snap_trimming": 0,
+            "op_queue_age_hist": {
+                "histogram": [],
+                "upper_bound": 1
+            },
+            "perf_stat": {
+                "commit_latency_ms": 0,
+                "apply_latency_ms": 0
+            }
+        },
+        {
+            "osd": 1,
+            "up_from": 14,
+            "seq": 60130288174,
+            "num_pgs": 0,
+            "kb": 586027008,
+            "kb_used": 1050496,
+            "kb_avail": 584976512,
+            "hb_peers": [
+                0,
+                2
+            ],
+            "snap_trim_queue_len": 0,
+            "num_snap_trimming": 0,
+            "op_queue_age_hist": {
+                "histogram": [],
+                "upper_bound": 1
+            },
+            "perf_stat": {
+                "commit_latency_ms": 0,
+                "apply_latency_ms": 0
+            }
+        }
+    ]
+}

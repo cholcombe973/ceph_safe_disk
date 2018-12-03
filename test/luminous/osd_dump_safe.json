@@ -1,0 +1,125 @@
+{
+    "epoch": 14,
+    "fsid": "792026ba-d228-11e8-9fcc-2c44fd88c3ac",
+    "created": "2018-10-17 16:20:51.500074",
+    "modified": "2018-11-16 21:33:43.656667",
+    "flags": "sortbitwise,recovery_deletes,purged_snapdirs",
+    "crush_version": 6,
+    "full_ratio": 0.950000,
+    "backfillfull_ratio": 0.900000,
+    "nearfull_ratio": 0.850000,
+    "cluster_snapshot": "",
+    "pool_max": 0,
+    "max_osd": 3,
+    "require_min_compat_client": "jewel",
+    "min_compat_client": "jewel",
+    "require_osd_release": "luminous",
+    "pools": [],
+    "osds": [
+        {
+            "osd": 0,
+            "uuid": "d2a3cea4-559d-47a3-b56c-2e4abcd418dd",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 7,
+            "last_clean_end": 10,
+            "up_from": 12,
+            "up_thru": 0,
+            "down_at": 11,
+            "lost_at": 0,
+            "public_addr": "10.255.151.217:6800/1246688",
+            "cluster_addr": "10.255.151.217:6801/1246688",
+            "heartbeat_back_addr": "10.255.151.217:6802/1246688",
+            "heartbeat_front_addr": "10.255.151.217:6803/1246688",
+            "state": [
+                "exists",
+                "up"
+            ]
+        },
+        {
+            "osd": 1,
+            "uuid": "c07ea2a3-c373-4c48-9476-7c134ba51b19",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 9,
+            "last_clean_end": 12,
+            "up_from": 14,
+            "up_thru": 0,
+            "down_at": 13,
+            "lost_at": 0,
+            "public_addr": "10.255.151.221:6800/1844",
+            "cluster_addr": "10.255.151.221:6801/1844",
+            "heartbeat_back_addr": "10.255.151.221:6802/1844",
+            "heartbeat_front_addr": "10.255.151.221:6803/1844",
+            "state": [
+                "exists",
+                "up"
+            ]
+        },
+        {
+            "osd": 2,
+            "uuid": "c8c8e857-b344-4117-aa1e-4c4fabb71016",
+            "up": 1,
+            "in": 1,
+            "weight": 1.000000,
+            "primary_affinity": 1.000000,
+            "last_clean_begin": 0,
+            "last_clean_end": 0,
+            "up_from": 10,
+            "up_thru": 0,
+            "down_at": 0,
+            "lost_at": 0,
+            "public_addr": "10.255.151.222:6800/15532",
+            "cluster_addr": "10.255.151.222:6801/15532",
+            "heartbeat_back_addr": "10.255.151.222:6802/15532",
+            "heartbeat_front_addr": "10.255.151.222:6803/15532",
+            "state": [
+                "exists",
+                "up"
+            ]
+        }
+    ],
+    "osd_xinfo": [
+        {
+            "osd": 0,
+            "down_stamp": "2018-11-09 06:56:47.718938",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 4611087853745930235,
+            "old_weight": 0
+        },
+        {
+            "osd": 1,
+            "down_stamp": "2018-11-16 21:30:48.179083",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 4611087853745930235,
+            "old_weight": 0
+        },
+        {
+            "osd": 2,
+            "down_stamp": "0.000000",
+            "laggy_probability": 0.000000,
+            "laggy_interval": 0,
+            "features": 4611087853745930235,
+            "old_weight": 0
+        }
+    ],
+    "pg_upmap": [],
+    "pg_upmap_items": [],
+    "pg_temp": [],
+    "primary_temp": [],
+    "blacklist": {},
+    "erasure_code_profiles": {
+        "default": {
+            "k": "2",
+            "m": "1",
+            "plugin": "jerasure",
+            "technique": "reed_sol_van"
+        }
+    }
+}

@@ -21,7 +21,7 @@ pub enum Format {
 
 // The removability status of an OSD. Using an enum for precedence:
 // Safe < Unknown < NonSafe
-#[derive(Serialize, Debug, Clone, Ord, Eq, PartialEq, PartialOrd)]
+#[derive(Serialize, Debug, Copy, Clone, Ord, Eq, PartialEq, PartialOrd)]
 pub enum Status {
     Safe,
     Unknown,
@@ -67,7 +67,7 @@ impl PgInfo {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 pub struct OsdDiag {
     osd_id: i32,
     osd_status: BinaryHeap<Status>,
@@ -111,7 +111,7 @@ impl ClusterReview {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 pub struct ClusterDiag {
     status: Status,
     osd_diags: Vec<OsdDiag>,
@@ -138,13 +138,18 @@ impl ClusterDiag {
                 // ClusterDiag.status defaults to safe and is only changed once
                 // an OSD that is unsafe to remove or pending is found
                 match *osd_status {
-                    Status::NonSafe => self.status = Status::NonSafe,
-                    Status::Unknown => self.status = Status::Unknown,
+                    // Short circuit if we find non safe status
+                    Status::NonSafe => return Status::NonSafe,
+                    Status::Unknown => return Status::Unknown,
                     _ => (),
                 };
             }
         }
-        self.status.clone()
+        // Edge case where no osds are found
+        if self.osd_diags.is_empty() {
+            return Status::NonSafe;
+        }
+        self.status
     }
 
     fn print_pretty(&self) {
@@ -201,7 +206,7 @@ impl DiagMap {
         let mut safe: bool = false;
         for stat in self.pg_map.pg_stats {
             for pool in self.osd_map.pools.iter() {
-                if (stat.up.clone().len() as i32) >= (pool.min_size + 1) {
+                if (stat.up.len() as i32) >= (pool.min_size + 1) {
                     safe = true;
                 }
             }
@@ -241,10 +246,11 @@ impl DiagMap {
 
         // Generate OSD removability.
         for pg in &pg_diags {
-            if let None = cluster_diag
+            if cluster_diag
                 .osd_diags
                 .iter_mut()
                 .find(|ref osd| osd.osd_id == pg.osd_id)
+                .is_none()
             {
                 cluster_diag.osd_diags.push(OsdDiag::new(pg.osd_id));
             } else if let Some(mut osd) = cluster_diag
@@ -278,7 +284,7 @@ mod tests {
         let status = DiagMap {
             pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
             osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
-        }.quick_diag(&Format::Pretty);
+        }.quick_diag(Format::Pretty);
 
         assert_eq!(status, true);
     }
@@ -304,6 +310,26 @@ mod tests {
     }
 
     #[test]
+    fn exhaustive_diag_luminous_safe() {
+        let status: Status = DiagMap {
+            pg_map: PGMap::from_file("test/jewel/pg_dump_safe.json").unwrap(),
+            osd_map: OsdMap::from_file("test/jewel/osd_dump_safe.json").unwrap(),
+        }.exhaustive_diag(Format::Json);
+
+        assert_eq!(status, Status::Safe);
+    }
+
+    #[test]
+    fn exhaustive_diag_luminous_non_safe() {
+        let status: Status = DiagMap {
+            pg_map: PGMap::from_file("test/luminous/pg_dump_non_safe.json").unwrap(),
+            osd_map: OsdMap::from_file("test/luminous/osd_dump_non_safe.json").unwrap(),
+        }.exhaustive_diag(Format::Pretty);
+
+        assert_eq!(status, Status::NonSafe);
+    }
+
+    #[test]
     fn exhaustive_diag_jewel_pending() {
         let status: Status = DiagMap {
             pg_map: PGMap::from_file("test/jewel/pg_dump_pending.json").unwrap(),
@@ -318,7 +344,7 @@ mod tests {
         let status = DiagMap {
             pg_map: PGMap::from_file("test/firefly/pg_dump_safe.json").unwrap(),
             osd_map: OsdMap::from_file("test/firefly/osd_dump_safe.json").unwrap(),
-        }.quick_diag(&Format::Json);
+        }.quick_diag(Format::Json);
 
         assert_eq!(status, true);
     }

@@ -1,5 +1,5 @@
-use std::str::FromStr;
 use std::collections::BTreeSet;
+use std::str::FromStr;
 
 // `Pending` PGs are stuck or peering and might still be recoverable, so we
 // cannot say with certainty whether they're safe or not.
@@ -17,13 +17,16 @@ impl RmSafety {
     pub fn new(states: &str) -> RmSafety {
         let pg_states = PgState::parse_state(states);
         if pg_states.contains(&PgState::Active) && pg_states.contains(&PgState::Clean) {
+            // And osd count > 1 ?
             RmSafety::Total
-        } else if pg_states.contains(&PgState::Backfill) ||
-                  pg_states.contains(&PgState::BackfillToofull) ||
-                  pg_states.contains(&PgState::WaitBackfill) ||
-                  pg_states.contains(&PgState::Down) ||
-                  pg_states.contains(&PgState::Undersized) ||
-                  pg_states.contains(&PgState::Incomplete) {
+        } else if pg_states.contains(&PgState::Backfill)
+            || pg_states.contains(&PgState::BackfillToofull)
+            || pg_states.contains(&PgState::WaitBackfill)
+            || pg_states.contains(&PgState::Down)
+            || pg_states.contains(&PgState::Undersized)
+            || pg_states.contains(&PgState::Unknown)
+            || pg_states.contains(&PgState::Incomplete)
+        {
             RmSafety::None
         } else {
             RmSafety::Pending
@@ -54,6 +57,7 @@ pub enum PgState {
     Remapped,
     Undersized,
     Peered,
+    Unknown,
 }
 
 impl FromStr for PgState {
@@ -81,6 +85,7 @@ impl FromStr for PgState {
             "remapped" => Ok(PgState::Remapped),
             "undersized" => Ok(PgState::Undersized),
             "peered" => Ok(PgState::Peered),
+            "unknown" => Ok(PgState::Unknown),
             _ => Err(()),
         }
     }
