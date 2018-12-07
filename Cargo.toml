@@ -3,6 +3,7 @@ name = "ceph-safe-disk"
 version = "0.1.5"
 repository = "https://github.com/CanonicalLtd/ceph_safe_disk"
 description = "Ceph disk safety removal tool"
+edition = '2018'
 authors = [
 	"Alberto Corona <ac@albertocorona.com>",
 	"Chris Holcombe <xfactor973@gmail.com>"

@@ -1,10 +1,7 @@
-extern crate ansi_term;
 #[macro_use]
 extern crate log;
 #[macro_use]
 extern crate serde_derive;
-extern crate serde_json;
-extern crate users;
 
 pub mod diag;
 mod error;

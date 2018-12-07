@@ -1,14 +1,11 @@
-extern crate serde;
-extern crate serde_json;
-
-use error::CSDError;
-use exec::*;
+use crate::error::CSDError;
+use crate::exec::call_ceph;
 
 use std::fmt::Debug;
 use std::fs::File;
 use std::io::prelude::*;
 
-use self::serde::de::DeserializeOwned;
+use serde::de::DeserializeOwned;
 
 // Generic trait to read file to serializable struct
 pub trait FromFile<T> {

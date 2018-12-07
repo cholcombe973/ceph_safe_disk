@@ -101,8 +101,8 @@ pub struct Pools {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use from::FromFile;
+    use super::OsdMap;
+    use crate::from::FromFile;
 
     // Luminous tests
     #[test]
@@ -181,7 +181,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn osdmap_from_ceph_panic() {
-        use from::FromCeph;
+        use crate::from::FromCeph;
         let osdmap = OsdMap::from_ceph("osd dump");
         assert_eq!(osdmap.is_ok(), true);
     }

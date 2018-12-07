@@ -1,6 +1,4 @@
-extern crate serde_json;
-
-use self::serde_json::Value;
+use serde_json::Value;
 
 // See `src/mon/PGMap.h` in ceph's source
 #[derive(Deserialize, Debug, PartialEq, Clone)]
@@ -172,8 +170,8 @@ pub struct PgStats {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use from::FromFile;
+    use super::PGMap;
+    use crate::from::FromFile;
 
     // Jewel tests
     #[test]
@@ -241,7 +239,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn pgmap_from_ceph_panic() {
-        use from::FromCeph;
+        use crate::from::FromCeph;
         let pgmap = PGMap::from_ceph("pg dump");
         assert_eq!(pgmap.is_ok(), true);
     }

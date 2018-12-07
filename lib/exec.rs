@@ -1,7 +1,5 @@
-extern crate users;
-
-use error::CSDError;
-use users::*;
+use crate::error::CSDError;
+use users::get_current_username;
 
 use std::process::Command;
 

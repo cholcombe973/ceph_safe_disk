@@ -1,13 +1,9 @@
-extern crate ansi_term;
-extern crate serde_json;
-
 use ansi_term::Colour;
-
-use error::CSDError;
-use from::*;
-use osdmap::OsdMap;
-use pgmap::*;
-use pgstate::*;
+use crate::pgmap::PGMap;
+use crate::osdmap::OsdMap;
+use crate::pgstate::RmSafety;
+use crate::error::CSDError;
+use crate::from::FromCeph;
 
 use std::collections::BinaryHeap;
 use std::fmt;
@@ -253,7 +249,7 @@ impl DiagMap {
                 .is_none()
             {
                 cluster_diag.osd_diags.push(OsdDiag::new(pg.osd_id));
-            } else if let Some(mut osd) = cluster_diag
+            } else if let Some(osd) = cluster_diag
                 .osd_diags
                 .iter_mut()
                 .find(|ref osd| osd.osd_id == pg.osd_id)
@@ -275,9 +271,9 @@ impl DiagMap {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use from::FromFile;
-    use osdmap::OsdMap;
-    use pgmap::PGMap;
+    use crate::from::FromFile;
+    use crate::osdmap::OsdMap;
+    use crate::pgmap::PGMap;
 
     #[test]
     fn quick_diag_jewel_safe() {
