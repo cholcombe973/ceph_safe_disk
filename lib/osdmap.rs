@@ -81,7 +81,7 @@ pub struct Pools {
     pub cache_mode: String,
     pub min_size: i32,
     pub cache_target_dirty_high_ratio_micro: Option<i32>,
-    pub crash_replay_interval: i32,
+    pub crash_replay_interval: Option<i32>,
     pub object_hash: i32,
     pub write_tier: i32,
     pub cache_target_dirty_ratio_micro: i32,

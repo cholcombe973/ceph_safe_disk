@@ -9,11 +9,11 @@ pub struct PGMap {
     pub stamp: String,
     pub pg_stats_sum: PgStatsSum,
     pub last_pg_scan: i32,
-    pub full_ratio: Value,
+    pub full_ratio: Option<Value>,
     pub pool_stats: Vec<PoolStats>,
     pub version: i32,
     pub last_osdmap_epoch: i32,
-    pub near_full_ratio: Value,
+    pub near_full_ratio: Option<Value>,
     pub osd_stats: Vec<OsdStats>,
     pub pg_stats: Vec<PgStats>,
 }
